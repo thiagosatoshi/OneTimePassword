@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "One Time Password";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>One Time Password</h2>
+
+<br />
+
+<div>
+    @Html.Label("userid", "User ID: ")
+    <input id="userid" type="text" name="userid" />
+    <input id="btnGetPassword" type="submit" value="Get Password" />
+</div>
+<div>
+    @Html.Label("generatedpassword", "Your password is: ")
+    <input id="generatedpassword" type="text" name="generatedpassword" readonly="readonly" />
+</div>
+
+<hr />
+
+<div>
+    @Html.Label("validatePassword", "Type your generated password: ")
+    <input id="password" type="text" name="password" />
+    <input id="btnValidatePassword" type="submit" value="Validate Password" />
+</div>
+
+<div>
+    @Html.Label("isPasswordValid", "Valid: ")
+    <input id="isPasswordValid" type="text" name="isPassowrdValid" readonly="readonly" />
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnGetPassword').click(function () {
+            var dataParam = {
+                userId: $('#userid').val()
+            };
+
+            $.getJSON("/OneTimePassword/GeneratePasword", dataParam, function (data) {
+                var result = $('#generatedpassword');
+                result.val(data.data);
+            });
+        });
+
+
+        $('#btnValidatePassword').click(function () {
+            var dataParam = {
+                userId: $('#userid').val(),
+                password: $('#password').val()
+            };
+
+            $.getJSON("/OneTimePassword/IsPasswordValid", dataParam, function (data) {
+                var result = $('#isPasswordValid');
+                result.val(data.data);
+
+            });
+        });
+
+    });
+
+</script>
+}
